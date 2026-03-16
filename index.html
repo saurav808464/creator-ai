@@ -6,6 +6,7 @@
   <title>Creator AI</title>
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -17,6 +18,7 @@
       align-items: center;
       padding: 16px;
     }
+
     .app {
       width: 100%;
       max-width: 430px;
@@ -26,24 +28,28 @@
       padding: 20px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.35);
     }
+
     .title {
       font-size: 28px;
       font-weight: 700;
       text-align: center;
       margin-bottom: 6px;
     }
+
     .subtitle {
       text-align: center;
       color: #cbd5e1;
       font-size: 14px;
       margin-bottom: 20px;
     }
+
     .tools {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
       margin-bottom: 16px;
     }
+
     button.tool {
       border: none;
       border-radius: 16px;
@@ -54,21 +60,26 @@
       background: #38bdf8;
       color: #0f172a;
     }
+
     .chat-box {
       background: rgba(255,255,255,0.08);
       border-radius: 16px;
       padding: 14px;
-      min-height: 180px;
-      margin-bottom: 14px;
+      min-height: 220px;
+      max-height: 340px;
       overflow-y: auto;
+      margin-bottom: 14px;
     }
+
     .msg {
       margin-bottom: 12px;
-      line-height: 1.5;
+      line-height: 1.6;
       white-space: pre-wrap;
     }
+
     .user { color: #facc15; }
     .bot { color: #e2e8f0; }
+
     textarea {
       width: 100%;
       min-height: 90px;
@@ -76,48 +87,57 @@
       outline: none;
       border-radius: 14px;
       padding: 12px;
+      font-size: 15px;
       resize: none;
-      font-size: 14px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
+
     .actions {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
     }
-    .actions button {
-      flex: 1;
+
+    .send {
       border: none;
-      border-radius: 14px;
-      padding: 12px;
-      font-size: 14px;
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 16px;
       font-weight: 700;
       cursor: pointer;
+      background: #22c55e;
+      color: white;
     }
-    .send { background: #22c55e; color: white; }
-    .copy { background: #f8fafc; color: #0f172a; }
+
+    .copy {
+      border: none;
+      border-radius: 16px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      background: #e5e7eb;
+      color: #111827;
+    }
   </style>
 </head>
 <body>
   <div class="app">
     <div class="title">Creator AI</div>
-    <div class="subtitle">YouTube, Study aur Ideas ke liye simple AI helper</div>
+    <div class="subtitle">YouTube ideas, titles, scripts, study help aur general help ek hi jagah</div>
 
     <div class="tools">
-      <button class="tool" onclick="quickTool('title')">YouTube Title</button>
-      <button class="tool" onclick="quickTool('script')">Short Script</button>
-      <button class="tool" onclick="quickTool('description')">Description</button>
-      <button class="tool" onclick="quickTool('hashtags')">Hashtags</button>
-      <button class="tool" onclick="quickTool('study')">Study Help</button>
-      <button class="tool" onclick="quickTool('ideas')">Video Ideas</button>
+      <button class="tool" onclick="quickAsk('title')">YouTube Title</button>
+      <button class="tool" onclick="quickAsk('script')">Short Script</button>
+      <button class="tool" onclick="quickAsk('description')">Description</button>
+      <button class="tool" onclick="quickAsk('hashtag')">Hashtags</button>
+      <button class="tool" onclick="quickAsk('study')">Study Help</button>
+      <button class="tool" onclick="quickAsk('idea')">Video Ideas</button>
     </div>
 
-    <div class="chat-box" id="chatBox">
-      <div class="msg bot"><b>Creator AI:</b> Namaste bhaiya 👋
+    <div class="chat-box" id="chatBox"></div>
 
-Yahan apna topic likho ya upar kisi tool par click karo.</div>
-    </div>
-
-    <textarea id="userInput" placeholder="Jaise: water title do..."></textarea>
+    <textarea id="userInput" placeholder="Jaise: gaming channel idea do, study time table do, AI video topic do..."></textarea>
 
     <div class="actions">
       <button class="send" onclick="sendMessage()">Send</button>
@@ -137,61 +157,100 @@ Yahan apna topic likho ya upar kisi tool par click karo.</div>
       chatBox.scrollTop = chatBox.scrollHeight;
     }
 
+    addMessage('bot', 'Namaste bhaiya 👋\nMain ab general Creator AI mode me hoon.\nAap YouTube ideas, title, script, description, hashtags, study help, earning ideas, gaming, vlog, AI tools, motivation aur tech ideas pooch sakte ho.');
+
     function generateReply(input) {
       const text = input.toLowerCase();
 
       if (text.includes('title')) {
-        if (text.includes('oxygen')) {
-          return 'Ye rahe 3 viral YouTube title ideas:\n1. How Long Could You Survive Without Oxygen?\n2. What Happens If Your Body Gets No Oxygen?\n3. 60 Seconds Without Oxygen Will Shock You';
+        if (text.includes('gaming')) {
+          return 'Gaming title ideas:\n1. Noob To Pro in 7 Days\n2. India Ka Sabse Hard Challenge in Free Fire\n3. Only Headshot Challenge Gameplay';
         }
-        if (text.includes('water') || text.includes('drank water') || text.includes('never drank')) {
-          return 'Ye rahe 3 viral YouTube title ideas:\n1. What If Humans Never Drank Water?\n2. How Long Could You Survive Without Water?\n3. No Water for Days? This Will Happen';
+        if (text.includes('study') || text.includes('education')) {
+          return 'Education title ideas:\n1. 10th Pass Karne Ka Smart Tareeka\n2. Exam Me Fast Revision Ka Secret\n3. Student Life Ko Easy Kaise Banaye';
         }
-        if (text.includes('sleep')) {
-          return 'Ye rahe 3 viral YouTube title ideas:\n1. What If Humans Never Slept?\n2. How Long Can You Survive Without Sleep?\n3. No Sleep for Days Will Shock You';
+        if (text.includes('ai')) {
+          return 'AI title ideas:\n1. AI Se Video Kaise Banaye\n2. Best Free AI Tools for Students\n3. Mobile Se AI Content Create Kaise Kare';
         }
-        return 'Ye rahe 3 viral YouTube title ideas:\n1. This Fact Will Shock You\n2. What Happens If This Stops?\n3. You Won’t Believe This Science Fact';
+        if (text.includes('vlog')) {
+          return 'Vlog title ideas:\n1. Mere Din Ki Real Life Vlog\n2. Village Life Morning Routine\n3. Ek Din Mere Saath';
+        }
+        return 'General YouTube title ideas:\n1. 2026 Me Fast Growing Channel Ideas\n2. Mobile Se Content Creator Kaise Bane\n3. Kam Time Me Viral Video Kaise Banaye';
       }
 
       if (text.includes('script')) {
-        if (text.includes('oxygen')) {
-          return 'Short script sample:\n"Socho agar achanak oxygen khatam ho jaye... pehle kuch seconds me dimaag aur body panic mode me chale jayegi. Phir saans tootne lagegi, aur body survival ke liye fight karegi..."';
+        if (text.includes('gaming')) {
+          return 'Gaming short script:\n"Aaj hum ek insane gaming challenge karne wale hain. Rule simple hai, lekin jeetna bahut mushkil. Kya hum is challenge ko complete kar payenge? Video end tak dekho."';
         }
-        if (text.includes('water')) {
-          return 'Short script sample:\n"Socho agar insaan paani peena band kar de... pehle body dehydration feel karegi, phir energy down hogi, aur dheere dheere organs par bura asar padne lagega..."';
+        if (text.includes('motivation')) {
+          return 'Motivation short script:\n"Success ek din me nahi milti. Roz thoda thoda kaam karne se bada result aata hai. Aaj ka chhota effort hi kal ki badi jeet banega."';
         }
-        return 'Short script sample:\n"Aj hum ek shocking topic ke baare me baat karenge. Jo aap soch bhi nahi sakte, wo body ke andar hona shuru ho jata hai..."';
+        if (text.includes('ai')) {
+          return 'AI short script:\n"Socho agar aap sirf phone se AI ki help se video, thumbnail aur script bana sako. Aaj hum dekhenge kaun se free AI tools aapka kaam easy bana sakte hain."';
+        }
+        return 'General short script:\n"Aaj hum ek aise topic par baat karenge jo bahut useful hai. Agar aap creator banna chahte ho, to ye cheezein aapke bahut kaam aayengi. End tak zaroor dekhna."';
       }
 
       if (text.includes('description')) {
-        if (text.includes('oxygen')) {
-          return 'Description sample:\nIs video me hum jaanenge ki oxygen ke bina insaan kitni der survive kar sakta hai aur body me kya kya changes hote hain. Video ko end tak dekho.';
+        if (text.includes('gaming')) {
+          return 'Gaming description:\nIs video me hum ek exciting gameplay challenge try kar rahe hain. Video ko end tak dekho aur comment me batao next challenge kaunsa chahiye.';
         }
-        if (text.includes('water')) {
-          return 'Description sample:\nIs video me hum jaanenge ki agar insaan paani na piye to body me kya changes hote hain aur kitne din tak survive kiya ja sakta hai. Video ko end tak dekho.';
+        if (text.includes('ai')) {
+          return 'AI description:\nIs video me hum best free AI tools ke baare me jaanenge jo video editing, script writing aur thumbnail banane me help karte hain.';
         }
-        return 'Description sample:\nIs video me hum ek interesting aur shocking fact ke baare me jaanenge. Video ko end tak zarur dekho.';
+        return 'General description:\nIs video me aapko useful ideas aur practical tips milenge. Agar aap YouTube ya content creation me interested ho, to ye video aapke kaam aa सकती है.';
       }
 
       if (text.includes('hashtag')) {
-        if (text.includes('oxygen')) {
-          return '#shorts #facts #oxygen #humanbody #viralvideo #sciencefacts';
+        if (text.includes('gaming')) {
+          return '#gaming #gameplay #freefire #bgmi #viralshorts #youtubegaming';
         }
-        if (text.includes('water')) {
-          return '#shorts #facts #water #dehydration #humanbody #sciencefacts';
+        if (text.includes('study')) {
+          return '#study #student #examtips #boardexam #motivation #studyhack';
         }
-        return '#shorts #viral #facts #science #trending #youtube';
+        if (text.includes('ai')) {
+          return '#ai #aitools #chatgpt #videocreation #contentcreator #tech';
+        }
+        return '#youtube #creator #viral #shorts #trending #contentcreation';
       }
 
       if (text.includes('study')) {
-        return 'Study help:\nKisi bhi answer ko simple karne ke liye topic bhejo. Main usko easy Hindi me samjha dunga.';
+        return 'Study help:\n1. Roz 3 subject padho\n2. 45 min study + 10 min break lo\n3. Raat me next day ka target likho\n4. Weak subject ko subah padho\n5. Sunday ko revision karo';
+      }
+
+      if (text.includes('earning') || text.includes('paise') || text.includes('money')) {
+        return 'Student earning ideas:\n1. Thumbnail design\n2. Video editing basic work\n3. Script writing\n4. Instagram reel editing\n5. Notes PDF banana\n6. Freelance typing work';
+      }
+
+      if (text.includes('gaming')) {
+        return 'Gaming channel ideas:\n1. Challenge based gameplay\n2. Funny moments video\n3. Tips and tricks shorts\n4. Noob to pro series\n5. Custom room highlights';
+      }
+
+      if (text.includes('vlog')) {
+        return 'Vlog channel ideas:\n1. Daily life vlog\n2. Village vlog\n3. Student routine vlog\n4. Low budget day vlog\n5. Real life struggle and progress vlog';
+      }
+
+      if (text.includes('motivation')) {
+        return 'Motivation video ideas:\n1. Garib se successful ka safar\n2. Student discipline routine\n3. Phone addiction se bahar kaise nikle\n4. Mehnat vs talent\n5. Kabhi haar mat mano';
+      }
+
+      if (text.includes('tech')) {
+        return 'Tech video ideas:\n1. Best apps for students\n2. Free editing apps\n3. 2026 ke useful mobile tools\n4. Cheap gadgets review\n5. AI tools for beginners';
+      }
+
+      if (text.includes('ai')) {
+        return 'AI video ideas:\n1. AI se script kaise likhen\n2. AI thumbnail kaise banaye\n3. Free AI voice tools\n4. Mobile se AI video editing\n5. Best AI tools for YouTubers';
+      }
+
+      if (text.includes('education')) {
+        return 'Education channel ideas:\n1. Class 10 study tips\n2. English speaking basics\n3. GK questions shorts\n4. Science facts easy Hindi me\n5. Exam preparation strategy';
       }
 
       if (text.includes('idea')) {
-        return 'Video ideas:\n1. What If Humans Never Slept?\n2. What If Earth Stopped Spinning?\n3. How Long Could You Survive Without Water?';
+        return 'General video ideas:\n1. 2026 Me Kaunsa YouTube Channel Start Kare\n2. Best Channel Ideas for Students\n3. Mobile Se YouTube Start Kaise Kare\n4. AI Tools for Beginners\n5. Study + Earning Balance Kaise Kare';
       }
 
-      return 'Main abhi demo mode me hoon. Tum YouTube title, script, description, hashtags, study help, ya video ideas maang sakte ho.';
+      return 'Main aapki madad kar sakta hoon in topics me:\n- YouTube title\n- short script\n- description\n- hashtags\n- study help\n- gaming ideas\n- vlog ideas\n- motivation ideas\n- AI tools ideas\n- earning ideas\n\nExample likho:\n"gaming title do"\n"AI script do"\n"study help do"\n"earning ideas do"';
     }
 
     function sendMessage() {
@@ -203,24 +262,32 @@ Yahan apna topic likho ya upar kisi tool par click karo.</div>
       userInput.value = '';
     }
 
-    function quickTool(type) {
-      let prompt = '';
-      if (type === 'title') prompt = 'title oxygen';
-      if (type === 'script') prompt = 'script oxygen';
-      if (type === 'description') prompt = 'description oxygen';
-      if (type === 'hashtags') prompt = 'hashtags oxygen';
-      if (type === 'study') prompt = 'study';
-      if (type === 'ideas') prompt = 'ideas';
-      addMessage('user', prompt);
-      const reply = generateReply(prompt);
-      setTimeout(() => addMessage('bot', reply), 300);
+    function quickAsk(type) {
+      const map = {
+        title: 'title do',
+        script: 'script do',
+        description: 'description do',
+        hashtag: 'hashtag do',
+        study: 'study help do',
+        idea: 'general video ideas do'
+      };
+      userInput.value = map[type];
+      sendMessage();
     }
 
     function copyChat() {
       const text = chatBox.innerText;
-      navigator.clipboard.writeText(text);
-      alert('Chat copied ho gaya');
+      navigator.clipboard.writeText(text).then(() => {
+        alert('Chat copied ho gaya');
+      });
     }
+
+    userInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
   </script>
 </body>
 </html>
