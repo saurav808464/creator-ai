@@ -1,418 +1,491 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Creator AI Helper</title>
+  <title>Creator AI</title>
   <style>
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
     }
 
     body {
+      font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
-      min-height: 100vh;
-      padding: 20px;
       color: white;
+      min-height: 100vh;
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .app {
-      max-width: 900px;
-      margin: 0 auto;
+      width: 100%;
+      max-width: 480px;
       background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(10px);
-      border-radius: 28px;
-      padding: 22px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      backdrop-filter: blur(14px);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
       border: 1px solid rgba(255,255,255,0.08);
     }
 
+    .top-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      background: rgba(56, 189, 248, 0.18);
+      color: #7dd3fc;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
     .title {
+      font-size: 30px;
+      font-weight: 800;
       text-align: center;
-      font-size: 32px;
-      font-weight: bold;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .subtitle {
       text-align: center;
       color: #cbd5e1;
-      font-size: 16px;
-      margin-bottom: 22px;
+      font-size: 14px;
       line-height: 1.5;
-    }
-
-    .quick-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      margin-bottom: 20px;
-    }
-
-    .quick-btn {
-      border: none;
-      padding: 16px 14px;
-      border-radius: 20px;
-      background: #38bdf8;
-      color: #082f49;
-      font-weight: bold;
-      font-size: 18px;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .quick-btn:hover {
-      transform: translateY(-2px);
-      background: #7dd3fc;
-    }
-
-    .info-box {
-      background: rgba(255,255,255,0.08);
-      border-radius: 24px;
-      padding: 24px;
-      color: #e2e8f0;
-      line-height: 1.8;
-      font-size: 17px;
-      margin-bottom: 20px;
-      border: 1px dashed rgba(255,255,255,0.18);
-    }
-
-    .input-box {
-      width: 100%;
-      min-height: 120px;
-      border: none;
-      outline: none;
-      resize: none;
-      border-radius: 22px;
-      padding: 18px;
-      font-size: 18px;
-      color: #111827;
-      background: white;
       margin-bottom: 18px;
     }
 
-    .btn-row {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 20px;
+    .hero-box {
+      background: rgba(255,255,255,0.06);
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255,255,255,0.06);
     }
 
-    .main-btn {
+    .hero-box p {
+      color: #e2e8f0;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin: 14px 0 10px;
+      color: #f8fafc;
+    }
+
+    .tools {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .tool {
+      border: none;
+      border-radius: 16px;
+      padding: 14px 10px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(135deg, #38bdf8, #22c55e);
+      color: #0f172a;
+      transition: 0.2s ease;
+    }
+
+    .tool:hover {
+      transform: scale(1.03);
+    }
+
+    .prompt-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .prompt-chip {
+      background: rgba(255,255,255,0.08);
+      color: #e2e8f0;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .chat-box {
+      background: rgba(255,255,255,0.07);
+      border-radius: 18px;
+      padding: 14px;
+      min-height: 230px;
+      max-height: 420px;
+      overflow-y: auto;
+      margin-bottom: 14px;
+      border: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .msg {
+      margin-bottom: 14px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      font-size: 14px;
+    }
+
+    .user {
+      color: #facc15;
+    }
+
+    .bot {
+      color: #e2e8f0;
+    }
+
+    .result-card {
+      background: rgba(255,255,255,0.06);
+      border-radius: 14px;
+      padding: 12px;
+      margin-top: 8px;
+      border-left: 4px solid #38bdf8;
+    }
+
+    .result-card h4 {
+      margin-bottom: 8px;
+      color: #7dd3fc;
+      font-size: 14px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 100px;
+      border: none;
+      outline: none;
+      border-radius: 16px;
+      padding: 14px;
+      resize: none;
+      font-size: 14px;
+      margin-bottom: 12px;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .actions button {
       flex: 1;
       border: none;
-      padding: 16px;
-      font-size: 18px;
-      font-weight: bold;
-      border-radius: 18px;
+      border-radius: 14px;
+      padding: 13px;
+      font-size: 14px;
+      font-weight: 800;
       cursor: pointer;
-      transition: 0.2s;
     }
 
-    #sendBtn {
+    .send {
       background: #22c55e;
       color: white;
     }
 
-    #copyBtn {
-      background: #e5e7eb;
-      color: #111827;
+    .copy {
+      background: #f8fafc;
+      color: #0f172a;
     }
 
-    .main-btn:hover {
-      transform: scale(1.02);
+    .clear {
+      background: #ef4444;
+      color: white;
     }
 
-    .result-wrap {
-      margin-top: 10px;
-    }
-
-    .result-title {
-      font-size: 22px;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-
-    .result {
-      background: rgba(15, 23, 42, 0.55);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 24px;
-      padding: 20px;
-      min-height: 220px;
-      white-space: pre-wrap;
-      line-height: 1.7;
-      font-size: 17px;
-      color: #f8fafc;
-    }
-
-    .footer-text {
-      margin-top: 16px;
+    .footer-note {
       text-align: center;
-      color: #cbd5e1;
-      font-size: 14px;
+      color: #94a3b8;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 8px;
     }
 
-    @media (max-width: 700px) {
-      .quick-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .title {
-        font-size: 26px;
-      }
-
-      .quick-btn {
-        font-size: 16px;
-        padding: 14px 10px;
-      }
-
-      .btn-row {
-        flex-direction: row;
-      }
+    .typing {
+      display: inline-block;
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 10px;
+      color: #cbd5e1;
+      font-size: 13px;
+      margin-top: 4px;
     }
   </style>
 </head>
 <body>
-
   <div class="app">
-    <div class="title">Creator AI Helper 🚀</div>
+    <div class="top-badge">SMART DEMO APP</div>
+    <div class="title">Creator AI</div>
     <div class="subtitle">
-      Ek hi jagah par YouTube, Study, Business, Blogging, Travel aur Motivation ka smart answer.
+      YouTube, Study, Business, Travel, Blogging, Earning aur General Help ke liye ek smart helper
     </div>
 
-    <div class="quick-grid">
-      <button class="quick-btn">YouTube Help</button>
-      <button class="quick-btn">Study Help</button>
-      <button class="quick-btn">Business Ideas</button>
-      <button class="quick-btn">Travel Help</button>
-      <button class="quick-btn">Blogging Help</button>
-      <button class="quick-btn">Motivation</button>
+    <div class="hero-box">
+      <p>
+        Namaste bhaiya 👋<br><br>
+        Yahan aap koi bhi topic likh sakte ho. Ye app aapko topic ke hisaab se Title, Script, Hashtags, Tips, Study Help,
+        Business Ideas, Travel Help, Blogging Ideas aur General Guidance dega.
+      </p>
     </div>
 
-    <div class="info-box">
-      Namaste bhaiya 👋<br><br>
-      Is version me aap ek topic likhoge aur AI uske hisaab se smart answer dega.<br><br>
-      Ye help kar sakta hai:<br>
-      oxygen par viral shorts pack do<br>
-      class 10 science samjhao<br>
-      kam paise me business idea do<br>
-      Delhi trip plan batao<br>
-      blogging topic do<br>
-      motivate karo
+    <div class="section-title">Quick Categories</div>
+    <div class="tools">
+      <button class="tool" onclick="quickTool('youtube')">YouTube</button>
+      <button class="tool" onclick="quickTool('study')">Study</button>
+      <button class="tool" onclick="quickTool('business')">Business</button>
+      <button class="tool" onclick="quickTool('travel')">Travel</button>
+      <button class="tool" onclick="quickTool('blogging')">Blogging</button>
+      <button class="tool" onclick="quickTool('earning')">Earning</button>
     </div>
 
-    <textarea id="userInput" class="input-box" placeholder="Yahan apna topic likho..."></textarea>
-
-    <div class="btn-row">
-      <button id="sendBtn" class="main-btn">Send</button>
-      <button id="copyBtn" class="main-btn">Copy</button>
+    <div class="section-title">Popular Prompts</div>
+    <div class="prompt-list">
+      <div class="prompt-chip" onclick="fillPrompt('oxygen par viral YouTube title script hashtag do')">Viral title idea</div>
+      <div class="prompt-chip" onclick="fillPrompt('class 10 science easy me samjhao')">Study help</div>
+      <div class="prompt-chip" onclick="fillPrompt('small business idea do')">Business idea</div>
+      <div class="prompt-chip" onclick="fillPrompt('travel reel caption do')">Travel caption</div>
+      <div class="prompt-chip" onclick="fillPrompt('online earning roadmap do')">Earning roadmap</div>
+      <div class="prompt-chip" onclick="fillPrompt('blog ke liye topic do')">Blog topic</div>
     </div>
 
-    <div class="result-wrap">
-      <div class="result-title">Result</div>
-      <div id="result" class="result">Yahan answer aayega...</div>
+    <div class="chat-box" id="chatBox">
+      <div class="msg bot">
+        <b>Creator AI:</b>
+        Namaste bhaiya 👋
+
+        Apna topic likho. Main aapko smart format me jawab dunga.
+      </div>
     </div>
 
-    <div class="footer-text">
-      Smart helper for creators, students and beginners
+    <textarea id="userInput" placeholder="Jaise: mere YouTube Shorts ke liye viral title, script, hashtags aur growth tips do..."></textarea>
+
+    <div class="actions">
+      <button class="send" onclick="sendMessage()">Send</button>
+      <button class="copy" onclick="copyChat()">Copy</button>
+      <button class="clear" onclick="clearChat()">Clear</button>
+    </div>
+
+    <div class="footer-note">
+      Demo version • Smart reply format • All-in-one helper
     </div>
   </div>
 
   <script>
-    const inputBox = document.getElementById("userInput");
-    const sendBtn = document.getElementById("sendBtn");
-    const copyBtn = document.getElementById("copyBtn");
-    const resultBox = document.getElementById("result");
-    const quickButtons = document.querySelectorAll(".quick-btn");
+    const chatBox = document.getElementById("chatBox");
+    const userInput = document.getElementById("userInput");
 
-    function typeText(text, element, speed = 12) {
-      element.innerHTML = "";
-      let i = 0;
-      const timer = setInterval(() => {
-        if (i < text.length) {
-          element.innerHTML += text.charAt(i);
-          i++;
-        } else {
-          clearInterval(timer);
-        }
-      }, speed);
+    function addMessage(type, html) {
+      const div = document.createElement("div");
+      div.className = "msg " + type;
+      div.innerHTML = `<b>${type === "user" ? "You" : "Creator AI"}:</b><br>${html}`;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
 
-    function getYouTubeAnswer(userText) {
-      return `🔥 YouTube Creator Pack
+    function showTyping(callback) {
+      const div = document.createElement("div");
+      div.className = "msg bot";
+      div.id = "typingBox";
+      div.innerHTML = `<span class="typing">Typing...</span>`;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
 
-📌 Title Ideas:
-1. ${userText} | Shocking Facts
-2. ${userText} | Viral Shorts Idea
-3. What Happens If ${userText}?
-4. ${userText} Explained in 30 Seconds
-5. The Truth About ${userText}
-
-📝 Short Script:
-Aaj hum baat karne wale hain ${userText} ke baare me.
-Socho agar ye sach me ho jaye to kya hoga?
-Shuru ke kuch seconds me hi body aur mind react karna shuru kar denge.
-Aur aage jo hoga wo aapko hairaan kar dega.
-Last tak dekho kyunki end me ek shocking fact bhi hai.
-
-#️⃣ Hashtags:
-#youtubeshorts #viralshorts #trending #facts #creator #shortvideo
-
-💡 Extra Tips:
-Thumbnail me 2 se 4 words hi rakho.
-Title curiosity wala rakho.
-Video ke first 3 seconds bahut strong rakho.`;
+      setTimeout(() => {
+        const typingBox = document.getElementById("typingBox");
+        if (typingBox) typingBox.remove();
+        callback();
+      }, 700);
     }
 
-    function getStudyAnswer(userText) {
-      return `📚 Study Help
-
-Topic: ${userText}
-
-✅ Easy Explanation:
-Is topic ko simple tareeke se samjho. Sabse pehle basic meaning samjho, phir example dekho, phir short revision karo.
-
-📝 Simple Answer Format:
-1. Definition
-2. Main Point
-3. Example
-4. Conclusion
-
-🎯 Exam Tip:
-Is topic ko apne words me likh kar yaad karo.
-Ratta kam, samajhna zyada important hai.
-
-⏰ Study Routine Tip:
-25 min padhai karo
-5 min break lo
-Phir next round start karo`;
+    function fillPrompt(text) {
+      userInput.value = text;
     }
 
-    function getBusinessAnswer(userText) {
-      return `💼 Business Ideas
+    function quickTool(type) {
+      let prompt = "";
 
-Aapka topic: ${userText}
+      if (type === "youtube") prompt = "mere topic ke hisaab se YouTube title script hashtag aur growth tips do";
+      if (type === "study") prompt = "class 10 science easy Hindi me samjhao aur yaad karne ka tareeka batao";
+      if (type === "business") prompt = "low budget business idea do aur start kaise kare batao";
+      if (type === "travel") prompt = "travel reel caption ideas do aur content tips batao";
+      if (type === "blogging") prompt = "blogging ke liye topic ideas aur writing tips do";
+      if (type === "earning") prompt = "student ke liye online earning roadmap do";
 
-✅ Useful Ideas:
-1. Mobile se poster aur thumbnail service
-2. Reel video editing service
-3. Notes ya digital PDF selling
-4. Local shop promotion service
-5. AI content help service
-
-💰 Kam Paise Me Start:
-Agar budget kam hai to service based kaam start karo.
-Skill use karke paisa kamao, stock rakhne ki zarurat nahi padegi.
-
-📌 Smart Tip:
-Pehle 3 clients low price me lo.
-Uske baad result dikha kar rate badhao.`;
+      userInput.value = prompt;
+      sendMessage();
     }
 
-    function getBloggingAnswer(userText) {
-      return `✍️ Blogging Help
+    function getYouTubeReply(input) {
+      return `
+        <div class="result-card">
+          <h4>Title Ideas</h4>
+          1. ${capitalizeTopic(input)}: Aisa Sach Jo Aapko Hila Dega<br>
+          2. ${capitalizeTopic(input)} ke Bare Me 3 Hairan Karne Wali Baatein<br>
+          3. Kya Aap Jante Ho? ${capitalizeTopic(input)} ka Asli Sach
+        </div>
 
-Blog topic: ${userText}
+        <div class="result-card">
+          <h4>Short Script</h4>
+          Socho agar ${input} ka asli effect samne aa jaye to kya hoga? Shuru me sab normal lagega, lekin dheere dheere aise facts samne aayenge jo kaafi shocking honge. Isi liye is topic ko samajhna bahut interesting hai.
+        </div>
 
-📌 Blog Title Ideas:
-1. Complete Guide on ${userText}
-2. Beginner Tips for ${userText}
-3. Best Ways to Learn ${userText}
-4. Why ${userText} Matters
-5. Easy Guide to ${userText}
+        <div class="result-card">
+          <h4>Hashtags</h4>
+          #shorts #viral #facts #trending #youtube #creator #content #explore
+        </div>
 
-📝 Blog Structure:
-Intro
-Main headings
-Useful tips
-Example
-Conclusion
-
-🔍 Writing Tip:
-Simple language use karo.
-Keyword ko naturally add karo.
-Heading chhoti aur clear rakho.`;
+        <div class="result-card">
+          <h4>Growth Tips</h4>
+          Strong hook rakho, first 3 second powerful banao, short editing rakho, clear text use karo aur same niche me regular upload karo.
+        </div>
+      `;
     }
 
-    function getTravelAnswer(userText) {
-      return `✈️ Travel Help
+    function getStudyReply(input) {
+      return `
+        <div class="result-card">
+          <h4>Easy Explanation</h4>
+          ${capitalizeTopic(input)} ko simple language me samjho: is topic ka main idea ye hai ki ise basic points me tod kar padho, example se samjho aur phir apne words me revise karo.
+        </div>
 
-Travel topic: ${userText}
+        <div class="result-card">
+          <h4>Yaad Karne Ka Tareeka</h4>
+          Chhote notes banao, 3 baar revise karo, khud se bolkar padhai karo aur difficult words ko simple Hindi me likh lo.
+        </div>
 
-📍 Simple Plan:
-Day 1: Main places visit karo
-Day 2: Local food aur famous spots
-Day 3: Shopping aur return planning
-
-💰 Budget Tips:
-Hotel pehle compare karo
-Train ya bus option check karo
-Daily food budget fix rakho
-
-🎒 Must Carry:
-Phone charger
-Power bank
-Water bottle
-ID proof
-Light bag
-
-📌 Travel Tip:
-Subah jaldi nikaloge to zyada jagah cover kar paoge.`;
+        <div class="result-card">
+          <h4>Exam Tips</h4>
+          Definition, example aur main point alag yaad karo. Answer ko simple aur saaf language me likho.
+        </div>
+      `;
     }
 
-    function getMotivationAnswer(userText) {
-      return `⚡ Motivation Boost
+    function getBusinessReply(input) {
+      return `
+        <div class="result-card">
+          <h4>Business Idea</h4>
+          ${capitalizeTopic(input)} ke hisaab se aap small service, digital work, local selling ya social media based business start kar sakte ho.
+        </div>
 
-Aapne likha: ${userText}
+        <div class="result-card">
+          <h4>Start Karne Ka Tareeka</h4>
+          Pehle skill choose karo, phir free me social media page banao, sample work dikhao aur chhote clients se start karo.
+        </div>
 
-Suno bhaiya,
-Har din same energy nahi hoti.
-Kabhi slow feel karna normal hai.
-Lekin progress chhote steps se bhi hoti hai.
-
-Aaj bas ek kaam poora karo.
-Kal do kaam kar lena.
-Dheere dheere confidence khud banega.
-
-🔥 Yaad rakho:
-Consistency, motivation se bhi zyada powerful hoti hai.`;
+        <div class="result-card">
+          <h4>Important Tip</h4>
+          Shuru me profit se zyada trust par focus karo. Dheere dheere repeat customers aur referrals aayenge.
+        </div>
+      `;
     }
 
-    function getGeneralAnswer(userText) {
-      return `🤖 Smart AI Reply
+    function getTravelReply(input) {
+      return `
+        <div class="result-card">
+          <h4>Travel Caption</h4>
+          Safar sirf jagah ka nahi hota, soch ka bhi hota hai ✨
+        </div>
 
-Aapne likha: ${userText}
+        <div class="result-card">
+          <h4>Travel Content Ideas</h4>
+          Place intro, food clips, local market, hidden spots, budget tips aur cinematic walking shots use karo.
+        </div>
 
-Main is topic par madad kar sakta hoon:
-✅ YouTube title + script + hashtags
-✅ Study help
-✅ Business ideas
-✅ Blogging help
-✅ Travel help
-✅ Motivation
-
-Try aise likho:
-oxygen par viral shorts pack do
-class 10 science samjhao
-kam paise me business idea do
-Delhi trip plan batao
-blog topic do`;
+        <div class="result-card">
+          <h4>Posting Tip</h4>
+          Short clips, trending audio aur location based hashtags use karo.
+        </div>
+      `;
     }
 
-    function getAnswer(userText) {
-      const text = userText.toLowerCase();
+    function getBloggingReply(input) {
+      return `
+        <div class="result-card">
+          <h4>Blog Topic Ideas</h4>
+          1. Beginner guide on ${input}<br>
+          2. Common mistakes in ${input}<br>
+          3. Best tips for ${input}
+        </div>
+
+        <div class="result-card">
+          <h4>Writing Tips</h4>
+          Simple heading rakho, chhote paragraphs likho, real example do aur ending me practical takeaway do.
+        </div>
+
+        <div class="result-card">
+          <h4>Blog Style</h4>
+          Aisa likho jaise aap kisi dost ko samjha rahe ho. Isse content natural lagta hai.
+        </div>
+      `;
+    }
+
+    function getEarningReply(input) {
+      return `
+        <div class="result-card">
+          <h4>Earning Roadmap</h4>
+          Pehle skill choose karo, phir daily practice karo, free samples banao, social media par post karo aur chhote paid work se start karo.
+        </div>
+
+        <div class="result-card">
+          <h4>Possible Fields</h4>
+          Content writing, video editing, thumbnail design, blogging, freelancing, tutoring aur social media work.
+        </div>
+
+        <div class="result-card">
+          <h4>Reality Check</h4>
+          Earning ka exact time fix nahi hota. Regular mehnat, skill aur consistency se result aata hai.
+        </div>
+      `;
+    }
+
+    function getGeneralReply(input) {
+      return `
+        <div class="result-card">
+          <h4>Main Reply</h4>
+          ${capitalizeTopic(input)} ke baare me simple guidance ye hai ki pehle goal clear karo, phir us topic ko basic level par samjho, uske baad practical steps lo.
+        </div>
+
+        <div class="result-card">
+          <h4>Smart Suggestion</h4>
+          Jo bhi kaam start karo usme consistency, patience aur daily thoda improvement bahut zaruri hota hai.
+        </div>
+
+        <div class="result-card">
+          <h4>Next Step</h4>
+          Aap isi topic ko aur detail me puch sakte ho jaise title, tips, roadmap, examples ya explanation.
+        </div>
+      `;
+    }
+
+    function capitalizeTopic(text) {
+      if (!text) return "Topic";
+      return text.charAt(0).toUpperCase() + text.slice(1);
+    }
+
+    function generateReply(input) {
+      const text = input.toLowerCase();
 
       if (
         text.includes("youtube") ||
-        text.includes("shorts") ||
-        text.includes("viral") ||
         text.includes("title") ||
         text.includes("script") ||
-        text.includes("hashtag")
+        text.includes("hashtag") ||
+        text.includes("shorts") ||
+        text.includes("video")
       ) {
-        return getYouTubeAnswer(userText);
+        return getYouTubeReply(input);
       }
 
       if (
@@ -421,120 +494,81 @@ blog topic do`;
         text.includes("science") ||
         text.includes("math") ||
         text.includes("exam") ||
-        text.includes("padhai")
+        text.includes("samjhao")
       ) {
-        return getStudyAnswer(userText);
+        return getStudyReply(input);
       }
 
       if (
         text.includes("business") ||
-        text.includes("paise") ||
-        text.includes("money") ||
-        text.includes("earn") ||
-        text.includes("kamai")
+        text.includes("startup") ||
+        text.includes("client") ||
+        text.includes("shop") ||
+        text.includes("idea")
       ) {
-        return getBusinessAnswer(userText);
-      }
-
-      if (
-        text.includes("blog") ||
-        text.includes("blogging") ||
-        text.includes("article") ||
-        text.includes("website")
-      ) {
-        return getBloggingAnswer(userText);
+        return getBusinessReply(input);
       }
 
       if (
         text.includes("travel") ||
         text.includes("trip") ||
-        text.includes("tour") ||
-        text.includes("delhi") ||
-        text.includes("goa")
+        text.includes("caption") ||
+        text.includes("journey")
       ) {
-        return getTravelAnswer(userText);
+        return getTravelReply(input);
       }
 
       if (
-        text.includes("motivation") ||
-        text.includes("sad") ||
-        text.includes("lazy") ||
-        text.includes("tired") ||
-        text.includes("demotivate")
+        text.includes("blog") ||
+        text.includes("article") ||
+        text.includes("writing") ||
+        text.includes("seo")
       ) {
-        return getMotivationAnswer(userText);
+        return getBloggingReply(input);
       }
 
-      return getGeneralAnswer(userText);
+      if (
+        text.includes("earning") ||
+        text.includes("earn") ||
+        text.includes("money") ||
+        text.includes("income") ||
+        text.includes("paise")
+      ) {
+        return getEarningReply(input);
+      }
+
+      return getGeneralReply(input);
     }
 
     function sendMessage() {
-      const userText = inputBox.value.trim();
+      const input = userInput.value.trim();
+      if (!input) return;
 
-      if (userText === "") {
-        typeText("Pehle kuch likho bhaiya 😊", resultBox, 20);
-        return;
-      }
+      addMessage("user", input.replace(/\n/g, "<br>"));
+      const reply = generateReply(input);
 
-      resultBox.innerHTML = "Typing...";
-      const answer = getAnswer(userText);
+      showTyping(() => {
+        addMessage("bot", reply);
+      });
 
-      setTimeout(() => {
-        typeText(answer, resultBox, 10);
-      }, 350);
+      userInput.value = "";
     }
 
-    sendBtn.addEventListener("click", sendMessage);
+    function copyChat() {
+      const text = chatBox.innerText;
+      navigator.clipboard.writeText(text);
+      alert("Chat copied ho gaya");
+    }
 
-    copyBtn.addEventListener("click", () => {
-      const text = resultBox.innerText.trim();
-
-      if (!text) {
-        alert("Copy karne ke liye pehle result lao.");
-        return;
-      }
-
-      navigator.clipboard.writeText(text).then(() => {
-        copyBtn.innerText = "Copied!";
-        setTimeout(() => {
-          copyBtn.innerText = "Copy";
-        }, 1500);
-      }).catch(() => {
-        alert("Copy nahi ho paya.");
-      });
-    });
-
-    inputBox.addEventListener("keydown", function(e) {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-      }
-    });
-
-    quickButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const btnText = button.innerText.toLowerCase();
-
-        if (btnText.includes("youtube")) {
-          inputBox.value = "oxygen par viral shorts pack do";
-        } else if (btnText.includes("study")) {
-          inputBox.value = "class 10 science samjhao";
-        } else if (btnText.includes("business")) {
-          inputBox.value = "kam paise me business idea do";
-        } else if (btnText.includes("travel")) {
-          inputBox.value = "Delhi trip plan batao";
-        } else if (btnText.includes("blogging")) {
-          inputBox.value = "blogging topic do";
-        } else if (btnText.includes("motivation")) {
-          inputBox.value = "mujhe motivate karo";
-        } else {
-          inputBox.value = button.innerText;
-        }
-
-        sendMessage();
-      });
-    });
+    function clearChat() {
+      chatBox.innerHTML = `
+        <div class="msg bot">
+          <b>Creator AI:</b><br>
+          Namaste bhaiya 👋<br><br>
+          Apna topic likho. Main aapko smart format me jawab dunga.
+        </div>
+      `;
+    }
   </script>
-
 </body>
 </html>
