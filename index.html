@@ -1,0 +1,188 @@
+<!DOCTYPE html><html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creator AI</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+    .app {
+      width: 100%;
+      max-width: 430px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .title {
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      text-align: center;
+      color: #cbd5e1;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    .tools {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    button.tool {
+      border: none;
+      border-radius: 16px;
+      padding: 14px 10px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      background: #38bdf8;
+      color: #0f172a;
+    }
+    .chat-box {
+      background: rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 14px;
+      min-height: 180px;
+      margin-bottom: 14px;
+      overflow-y: auto;
+    }
+    .msg {
+      margin-bottom: 12px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+    .user { color: #facc15; }
+    .bot { color: #e2e8f0; }
+    textarea {
+      width: 100%;
+      min-height: 90px;
+      border: none;
+      outline: none;
+      border-radius: 14px;
+      padding: 12px;
+      resize: none;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+    .actions button {
+      flex: 1;
+      border: none;
+      border-radius: 14px;
+      padding: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .send { background: #22c55e; color: white; }
+    .copy { background: #f8fafc; color: #0f172a; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="title">Creator AI</div>
+    <div class="subtitle">YouTube, Study aur Ideas ke liye simple AI helper</div><div class="tools">
+  <button class="tool" onclick="quickTool('title')">YouTube Title</button>
+  <button class="tool" onclick="quickTool('script')">Short Script</button>
+  <button class="tool" onclick="quickTool('description')">Description</button>
+  <button class="tool" onclick="quickTool('hashtags')">Hashtags</button>
+  <button class="tool" onclick="quickTool('study')">Study Help</button>
+  <button class="tool" onclick="quickTool('ideas')">Video Ideas</button>
+</div>
+
+<div class="chat-box" id="chatBox">
+  <div class="msg bot"><b>Creator AI:</b> Namaste bhaiya 👋
+
+Yahan apna topic likho ya upar kisi tool par click karo.</div> </div>
+
+<textarea id="userInput" placeholder="Jaise: oxygen par ek viral short title do..."></textarea>
+
+<div class="actions">
+  <button class="send" onclick="sendMessage()">Send</button>
+  <button class="copy" onclick="copyChat()">Copy</button>
+</div>
+
+  </div>  <script>
+    const chatBox = document.getElementById('chatBox');
+    const userInput = document.getElementById('userInput');
+
+    function addMessage(type, text) {
+      const div = document.createElement('div');
+      div.className = 'msg ' + type;
+      div.innerHTML = `<b>${type === 'user' ? 'You' : 'Creator AI'}:</b> ${text.replace(/\n/g, '<br>')}`;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function generateReply(input) {
+      const text = input.toLowerCase();
+
+      if (text.includes('title')) {
+        return 'Ye rahe 3 viral YouTube title ideas:\n1. How Long Could You Survive Without Oxygen?\n2. What Happens If Your Body Gets No Oxygen?\n3. 60 Seconds Without Oxygen Will Shock You';
+      }
+      if (text.includes('script')) {
+        return 'Short script sample:\n"Socho agar achanak oxygen khatam ho jaye... pehle kuch seconds me dimaag aur body panic mode me chale jayegi. Phir saans tootne lagegi, aur body survival ke liye fight karegi..."';
+      }
+      if (text.includes('description')) {
+        return 'Description sample:\nIs video me hum jaanenge ki oxygen ke bina insaan kitni der survive kar sakta hai aur body me kya kya changes hote hain. Video ko end tak dekho.';
+      }
+      if (text.includes('hashtag')) {
+        return '#shorts #facts #oxygen #humanbody #viralvideo #sciencefacts';
+      }
+      if (text.includes('study')) {
+        return 'Study help:\nKisi bhi answer ko simple karne ke liye topic bhejo. Main usko easy Hindi me samjha dunga.';
+      }
+      if (text.includes('idea')) {
+        return 'Video ideas:\n1. What If Humans Never Slept?\n2. What If Earth Stopped Spinning?\n3. How Long Could You Survive Without Water?';
+      }
+
+      return 'Main abhi demo mode me hoon. Tum YouTube title, script, description, hashtags, study help, ya video ideas maang sakte ho.';
+    }
+
+    function sendMessage() {
+      const input = userInput.value.trim();
+      if (!input) return;
+      addMessage('user', input);
+      const reply = generateReply(input);
+      setTimeout(() => addMessage('bot', reply), 300);
+      userInput.value = '';
+    }
+
+    function quickTool(type) {
+      let prompt = '';
+      if (type === 'title') prompt = 'title';
+      if (type === 'script') prompt = 'script';
+      if (type === 'description') prompt = 'description';
+      if (type === 'hashtags') prompt = 'hashtags';
+      if (type === 'study') prompt = 'study';
+      if (type === 'ideas') prompt = 'ideas';
+      addMessage('user', prompt);
+      const reply = generateReply(prompt);
+      setTimeout(() => addMessage('bot', reply), 300);
+    }
+
+    function copyChat() {
+      const text = chatBox.innerText;
+      navigator.clipboard.writeText(text);
+      alert('Chat copied ho gaya');
+    }
+  </script></body>
+</html>
